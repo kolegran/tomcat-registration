@@ -11,11 +11,11 @@
             <tbody>
                 <tr>
                     <td><label for="firstname">First name: </label></td>
-                    <td><input id="firstname" name="name" type="text" /></td>
+                    <td><input id="firstname" name="firstname" type="text" /></td>
                 </tr>
                 <tr>
                     <td><label for="lastname">Last name: </label></td>
-                    <td><input id="lastname" name="name" type="text" /></td>
+                    <td><input id="lastname" name="lastname" type="text" /></td>
                 </tr>
                 <tr>
                     <td><label for="email">Email address:</label></td>

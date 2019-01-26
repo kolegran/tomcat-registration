@@ -1,4 +1,5 @@
 import javax.sql.DataSource;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
@@ -13,14 +14,13 @@ public class UserRepositoryDB implements UserRepository {
     @Override
     public void saveNewUser(User user) {
         try {
-            String sql = String.format("insert into users (firstName, lastName, userEmail, username, password) values ('%s','%s','%s','%s','%s')",
-                    user.getFirstName(),
-                    user.getLastName(),
-                    user.getUserEmail(),
-                    user.getUsername(),
-                    user.getPassword()
-            );
-            dataSource.getConnection().createStatement().execute(sql);
+            PreparedStatement ps = dataSource.getConnection().prepareStatement("insert into users (firstName, lastName, userEmail, username, password) values (?,?,?,?,?)");
+            ps.setString(1, user.getFirstName());
+            ps.setString(2, user.getLastName());
+            ps.setString(3, user.getUserEmail());
+            ps.setString(4, user.getUsername());
+            ps.setString(5, user.getPassword());
+            ps.execute();
         } catch (SQLException e) {
             throw new IllegalStateException(e);
         }
@@ -29,7 +29,7 @@ public class UserRepositoryDB implements UserRepository {
     @Override
     public Optional<User> findByUsername(String username) {
         try {
-            ResultSet resultset = dataSource.getConnection().createStatement().executeQuery("select * from users where username = '" + username + "'");
+            ResultSet resultset = dataSource.getConnection().createStatement().executeQuery("select * from users where username = \'" + username + "\'");
 
             if (!resultset.next()) {
                 return Optional.empty();
